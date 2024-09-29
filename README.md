@@ -1,0 +1,1 @@
+# In the app.use() method, it will catch all HTTP requests, regardless of the HTTP method (GET, POST, PUT, etc.), as long as the URL matches. However, if you use {app.post(),app.get(),app.put()...more}, it will only match requests with the HTTP POST ,GET,PUT... method.
