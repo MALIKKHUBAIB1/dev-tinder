@@ -1,40 +1,33 @@
 const express = require("express");
 const { isUserAuthenticated } = require("../utils/middleware/auth");
+const { connectToDataBase } = require("./config/database");
+const User = require("./models/user");
 const app = express();
 
-// app.use(
-//   "/user",
-//   (req, res, next) => {
-//     console.log("resp1");
-//     next();
-//     // res.send("user1");
-//   },
-//   (req, res) => {
-//     console.log("resp2");
-//     res.send("user2");
-//   },
-//   (req, res) => {
-//     console.log("resp3");
-//     res.send("user3");
-//   }
-// );
-
-// To parse URL-encoded bodies (form submissions):
-
-app.use("/admin", isUserAuthenticated);
-
-app.get("/admin/getAlldata", (req, res, next) => {
-  console.log("resp2");
-  res.send("send all user Data");
-  // next();
+app.post("/signup", async (req, res) => {
+  const userData = {
+    firstName: "Jhon",
+    lastName: "Doe",
+    age: 34,
+    gender: "Male",
+    password: "password",
+    email: "email@example.com",
+  };
+  try {
+    const user = await new User(userData);
+    user.save();
+    res.send("user created successfully");
+  } catch (error) {
+    res.status(400).send("error while saving the user " + error.message);
+  }
 });
-
-app.get("/admin/delete", (req, res, next) => {
-  console.log("resp1");
-  res.send("delte user");
-  // next();
-});
-
-app.listen(3000, () => {
-  console.log("listening on 3000");
-});
+connectToDataBase()
+  .then(() => {
+    console.log("DataBase Connected successfully");
+    app.listen(3000, () => {
+      console.log("listening on 3000");
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
