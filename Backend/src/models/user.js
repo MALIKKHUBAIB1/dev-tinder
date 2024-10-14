@@ -23,8 +23,8 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       validate(value) {
-        if (validator.isEmail(value)) {
-          throw new Error(" email id is not valid");
+        if (!validator.isEmail(value)) {
+          throw new Error(" email id is not valid " + value);
         }
       },
     },
@@ -53,6 +53,11 @@ const userSchema = new mongoose.Schema(
     photoUrl: {
       type: String,
       default: "https://cdn-icons-png.flaticon.com/512/219/219988.png",
+      validate(value) {
+        if (!validator.isURL(value)) {
+          throw new Error("Invalid URL");
+        }
+      },
     },
     skills: {
       type: [String],

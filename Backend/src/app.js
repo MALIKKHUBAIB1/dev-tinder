@@ -27,7 +27,7 @@ app.post("/signup", async (req, res) => {
       return res.status(401).send("user already exists");
     }
     const user = new User(userData);
-    user.save();
+    await user.save();
     res.status(200).send("user created successfully");
   } catch (error) {
     res.status(400).send("error while saving the user " + error.message);
