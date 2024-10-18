@@ -1,8 +1,7 @@
 const express = require("express");
 const { isUserAuthenticated } = require("../utils/middleware/auth");
 const { connectToDataBase } = require("./config/database");
-var validator = require("validator");
-
+const singupValidation = require("../utils/validation");
 const User = require("./models/user");
 const app = express();
 
@@ -11,17 +10,14 @@ const app = express();
 app.use(express.json());
 //singup user
 app.post("/signup", async (req, res) => {
+  // validate the userData
+  // store the password in the hash
+  // send token to the to user
+
   try {
+    singupValidation(req.body);
     const userData = req.body;
-    const { firstName, lastName, age, gender, password, email } = userData;
-    if (![firstName, lastName, age, gender, password, email].every(Boolean)) {
-      return res
-        .status(404)
-        .send("invalid feild please fill the feild with valid values");
-    }
-    if (!["male", "female", "others"].includes(gender)) {
-      return res.status(401).send("invalid gender feild");
-    }
+
     const findUser = await User.findOne({ email });
     if (findUser) {
       return res.status(401).send("user already exists");
@@ -30,7 +26,7 @@ app.post("/signup", async (req, res) => {
     await user.save();
     res.status(200).send("user created successfully");
   } catch (error) {
-    res.status(400).send("error while saving the user " + error.message);
+    res.status(400).send("error " + error.message);
   }
 });
 // get user by email
