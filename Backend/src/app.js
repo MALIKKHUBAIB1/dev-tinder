@@ -1,5 +1,4 @@
 const express = require("express");
-const { isUserAuthenticated } = require("../utils/middleware/auth");
 const { connectToDataBase } = require("./config/database");
 const singupValidation = require("../utils/validation");
 const User = require("./models/user");
@@ -10,7 +9,7 @@ const app = express();
 app.use(express.json());
 //singup user
 app.post("/signup", async (req, res) => {
-  // validate the userData
+  // validate the userData0
   // store the password in the hash
   // send token to the to user
 
@@ -54,7 +53,7 @@ app.get("/feed", async (req, res) => {
     res.status(400).send("something went wrong" + error.message);
   }
 });
-// delete the usr by email
+// delete the user by email
 app.delete("/user", async (req, res) => {
   try {
     const email = req.body.email;
@@ -99,7 +98,7 @@ app.patch("/user/:id", async (req, res) => {
       return res.status(401).send("the skill length should less then 10");
     }
     if (!isAllowedValid) {
-      return res.status(401).send("you can not update this feild");
+      return res.status(401).send("you can not update this field");
     }
 
     const user = await User.findByIdAndUpdate(id, data, {
