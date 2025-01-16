@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-var validator = require("validator");
+let validator = require("validator");
 
 const userSchema = new mongoose.Schema(
   {
@@ -64,7 +64,7 @@ const userSchema = new mongoose.Schema(
     },
     about: {
       type: String,
-      default: "this is about user bio ",
+      default: "this is bio of user ",
       trim: true,
     },
   },

@@ -82,15 +82,7 @@ app.patch("/user/:id", async (req, res) => {
       return res.status(401).send("enter a valid id ");
     }
 
-    const ALLOWED_UPDATES = [
-      "id",
-      "gender",
-      "skills",
-      "age",
-      "firstName",
-      "lastName",
-      "photoUrl",
-    ];
+    const ALLOWED_UPDATES = ["id", "gender", "skills", "age", "photoUrl"];
     const isAllowedValid = Object.keys(data).every((key) =>
       ALLOWED_UPDATES.includes(key)
     );
