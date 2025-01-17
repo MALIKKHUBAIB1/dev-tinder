@@ -1,13 +1,20 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const { connectToDataBase } = require("./config/database");
 const { signupValidation } = require("../utils/validation");
 const User = require("./models/user");
+const { jwtSecretKey } = require("../utils/const");
+const { isUserAuthenticated } = require("../utils/middleware/auth");
 const app = express();
 
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(express.json());
+app.use(cookieParser());
+
 //singup user
 app.post("/login", async (req, res) => {
   try {
@@ -20,19 +27,31 @@ app.post("/login", async (req, res) => {
       return res.status(400).send("Invalid credentials ");
     }
 
-    // Compare the provided password with the stored hashed password
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      existingUser.password
-    );
+    const isPasswordCorrect = existingUser.comparePassword(password);
     if (!isPasswordCorrect) {
       return res.status(400).send("Incorrect password. Please try again.");
     }
 
+    const token = existingUser.getJwt();
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 1 * 3600000),
+    });
     res.status(200).send(existingUser);
   } catch (error) {
     res.status(500).send("something went wrong" + error);
   }
+});
+// get profile of user
+app.get("/profile", isUserAuthenticated, async (req, res) => {
+  const _id = req._id;
+  console.log(_id);
+  const userProfile = await User.findById({ _id }).select("-password");
+  if (!userProfile) {
+    return res.status(404).send("User profile not found.");
+  }
+  res.status(200).json(userProfile);
 });
 
 app.post("/signup", async (req, res) => {
