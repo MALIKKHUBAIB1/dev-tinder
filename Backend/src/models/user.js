@@ -78,10 +78,16 @@ userSchema.method("getJwt", function () {
   });
   return token;
 });
-userSchema.method("comparePassword", async function (newPassword) {
-  const isPasswordCorrect = await bcrypt.compare(this.password, newPassword);
+userSchema.method("comparePassword", async function (passwordByInputUser) {
+  //first user password then stored password
+  const hashPassword = this.password;
+  const isPasswordCorrect = await bcrypt.compare(
+    passwordByInputUser,
+    hashPassword
+  );
   return isPasswordCorrect;
 });
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;

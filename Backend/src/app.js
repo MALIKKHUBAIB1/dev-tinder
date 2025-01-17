@@ -22,12 +22,14 @@ app.post("/login", async (req, res) => {
     if (!password || !email) {
       return res.status(400).send("Password or email cannot be empty.");
     }
+    
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       return res.status(400).send("Invalid credentials ");
     }
 
-    const isPasswordCorrect = existingUser.comparePassword(password);
+    const isPasswordCorrect = await existingUser.comparePassword(password);
+    console.log(isPasswordCorrect);
     if (!isPasswordCorrect) {
       return res.status(400).send("Incorrect password. Please try again.");
     }
