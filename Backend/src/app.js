@@ -1,6 +1,7 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const { connectToDataBase } = require("./config/database");
-const singupValidation = require("../utils/validation");
+const { signupValidation } = require("../utils/validation");
 const User = require("./models/user");
 const app = express();
 
@@ -8,19 +9,57 @@ const app = express();
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 //singup user
+app.post("/login", async (req, res) => {
+  try {
+    const { password, email } = req.body;
+    if (!password || !email) {
+      return res.status(400).send("Password or email cannot be empty.");
+    }
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      return res.status(400).send("Invalid credentials ");
+    }
+
+    // Compare the provided password with the stored hashed password
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
+    if (!isPasswordCorrect) {
+      return res.status(400).send("Incorrect password. Please try again.");
+    }
+
+    res.status(200).send(existingUser);
+  } catch (error) {
+    res.status(500).send("something went wrong" + error);
+  }
+});
+
 app.post("/signup", async (req, res) => {
   // validate the userData0
   // store the password in the hash
   // send token to the to user
 
   try {
-    singupValidation(req.body);
-    const userData = req.body;
+    const { firstName, lastName, age, gender, password, email, skills } =
+      req.body;
+    signupValidation(req.body);
 
-    const findUser = await User.findOne({ email });
-    if (findUser) {
+    const existUser = await User.findOne({ email });
+    if (existUser) {
       return res.status(401).send("user already exists");
     }
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+    const userData = {
+      firstName,
+      lastName,
+      age,
+      gender,
+      email,
+      password: hashPassword,
+      skills,
+    };
     const user = new User(userData);
     await user.save();
     res.status(200).send("user created successfully");
