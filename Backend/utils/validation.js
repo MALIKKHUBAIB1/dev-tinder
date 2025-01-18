@@ -57,8 +57,26 @@ function validDateProfileData(userData) {
 
   return isUpdateAllowed;
 }
+function validatePasswords(userInputPassword) {
+  const { oldPassword, newPassword, confirmPassword } = userInputPassword;
+
+  if (!oldPassword) {
+    return { valid: false, message: "Old password cannot be empty." };
+  }
+  if (newPassword !== confirmPassword) {
+    return { valid: false, message: "Passwords must match." };
+  }
+  if (oldPassword === newPassword) {
+    return {
+      valid: false,
+      message: "Old and new passwords cannot be the same.",
+    };
+  }
+  return { valid: true };
+}
 
 module.exports = {
   signupValidation,
   validDateProfileData,
+  validatePasswords,
 };

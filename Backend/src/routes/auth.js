@@ -18,7 +18,6 @@ authRouter.post("/login", async (req, res) => {
     }
 
     const isPasswordCorrect = await existingUser.comparePassword(password);
-    console.log(isPasswordCorrect);
     if (!isPasswordCorrect) {
       return res.status(400).send("Incorrect password. Please try again.");
     }
