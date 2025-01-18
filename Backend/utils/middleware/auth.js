@@ -9,11 +9,13 @@ async function isUserAuthenticated(req, res, next) {
         .status(401)
         .send("Unauthorized: Access denied due to missing token.");
     }
+
     const { _id } = await jwt.verify(token, jwtSecretKey);
     if (!_id) {
       return res.status(401).send("Unauthorized: Invalid token.");
     }
     req._id = _id;
+    // req.token = token;
     next();
   } catch (error) {
     if (error.name === "JsonWebTokenError") {

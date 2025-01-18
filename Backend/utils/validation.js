@@ -17,7 +17,7 @@ const signupValidation = (userData) => {
   }
 
   // Validate firstName
-  if (firstName.length <3 || firstName.length > 16) {
+  if (firstName.length < 3 || firstName.length > 16) {
     validationError("First name must be between 3 and 16 characters.");
   }
 
@@ -42,7 +42,23 @@ const signupValidation = (userData) => {
     );
   }
 };
+function validDateProfileData(userData) {
+  const allowedUpdate = [
+    "skills",
+    "age",
+    "about",
+    "photoUrl",
+    "firstName",
+    "lastName",
+  ];
+  const isUpdateAllowed = Object.keys(userData).every((userInputKey) => {
+    return allowedUpdate.includes(userInputKey); // Explicitly return the result
+  });
+
+  return isUpdateAllowed;
+}
 
 module.exports = {
   signupValidation,
+  validDateProfileData,
 };
