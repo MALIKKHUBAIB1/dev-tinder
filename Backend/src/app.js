@@ -22,7 +22,7 @@ app.post("/login", async (req, res) => {
     if (!password || !email) {
       return res.status(400).send("Password or email cannot be empty.");
     }
-    
+
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       return res.status(400).send("Invalid credentials ");
@@ -132,39 +132,6 @@ app.delete("/user", async (req, res) => {
   }
 });
 
-// update the user by email or id
-app.patch("/user/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const data = req.body;
-
-    if (!id) {
-      return res.status(401).send("enter a valid id ");
-    }
-
-    const ALLOWED_UPDATES = ["id", "gender", "skills", "age", "photoUrl"];
-    const isAllowedValid = Object.keys(data).every((key) =>
-      ALLOWED_UPDATES.includes(key)
-    );
-    if (req.body?.skills.length > 10) {
-      return res.status(401).send("the skill length should less then 10");
-    }
-    if (!isAllowedValid) {
-      return res.status(401).send("you can not update this field");
-    }
-
-    const user = await User.findByIdAndUpdate(id, data, {
-      runValidators: true,
-    });
-
-    if (!user) {
-      return res.status(404).send("user not found");
-    }
-    res.status(200).send("user updated successfully");
-  } catch (error) {
-    res.status(401).send(error.message + " some error");
-  }
-});
 connectToDataBase()
   .then(() => {
     console.log("DataBase Connected successfully");
