@@ -2,6 +2,7 @@ const express = require("express");
 const { isUserAuthenticated } = require("../../utils/middleware/auth");
 const { ConnectionRequest } = require("../models/connectionRequest");
 const mongoose = require("mongoose");
+const User = require("../models/user");
 const routerRequest = express.Router();
 
 routerRequest.post(
@@ -12,16 +13,9 @@ routerRequest.post(
       const toUserId = req.params.toUserId;
       const formUserID = req._id;
       const status = req.params.status;
+      const allowedStatus = ["interested", "ignore"];
+      const isStatusValid = allowedStatus.includes(status);
 
-      const AllowedStatus = ["interested", "ignore"];
-      const isStatusValid = AllowedStatus.includes(status);
-      if (toUserId === formUserID) {
-        return res
-          .status(400)
-          .json({
-            message: "You cannot send a connection request to yourself.",
-          });
-      }
       if (!isStatusValid) {
         return res
           .status(401)
@@ -32,18 +26,20 @@ routerRequest.post(
       if (!mongoose.Types.ObjectId.isValid(toUserId)) {
         return res.status(400).json({ message: "Invalid toUserId." });
       }
+
       const existingConnection = await ConnectionRequest.findOne({
         $or: [
           { formUserID, toUserId },
           { formUserID: toUserId, toUserId: formUserID },
         ],
       });
+
       if (existingConnection) {
         return res
           .status(400)
           .json({ message: "A connection request already exists." });
       }
-      
+
       const connectionRequest = new ConnectionRequest({
         formUserID,
         toUserId,
@@ -53,9 +49,20 @@ routerRequest.post(
       if (!connectionRequest) {
         throw new Error("can not find the user please login again ");
       }
-      const data = await connectionRequest.save();
+
+      const loggedInUser = await User.findById(formUserID);
+      if (!loggedInUser) {
+        return res.status(404).json({ message: "Logged in user not found." });
+      }
+
+      const connectionUser = await User.findById(toUserId);
+      if (!connectionUser) {
+        return res.status(404).json({ message: "Connection user not found." });
+      }
+
+      await connectionRequest.save();
       res.json({
-        message: "connetion made succesfully with the " + data,
+        message: `${loggedInUser.firstName} has sent a connection request to ${connectionUser.firstName} with status: ${status}`,
       });
     } catch (dbError) {
       return res

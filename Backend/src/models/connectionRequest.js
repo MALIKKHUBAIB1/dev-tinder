@@ -21,6 +21,18 @@ const connectionRequestSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+connectionRequestSchema.index({formUserID: 1,toUserId:1})
+
+connectionRequestSchema.pre("save", function (next) {
+  const connectionRequest = this;
+  const formUserID = new mongoose.Types.ObjectId(connectionRequest.formUserID);
+  const toUserId = new mongoose.Types.ObjectId(connectionRequest.toUserId);
+
+  if (formUserID.equals(toUserId)) {
+    throw new Error("You cannot send a connection request to yourself.");
+  }
+  next();
+});
 
 const ConnectionRequest = new mongoose.model(
   "ConnectionRequest",
