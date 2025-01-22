@@ -20,7 +20,6 @@ Post request/review/reject/:reviewId
 Post request/review/accept/:reviewId
 
 ## userRouter
-
 Get /connection
 Get /connection/recived
 Get /feed get the profile of the other user at your platoform

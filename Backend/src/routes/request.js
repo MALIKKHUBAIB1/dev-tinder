@@ -83,11 +83,8 @@ routerRequest.post(
       // Store the result in the database.
       // Handle edge cases (such as invalid status, missing request ID, etc.).
 
-      const id = req._id;
+      const id = req._id; //loggedIn user
       const { status, requestId } = req.params;
-
-      console.log("loggedIn", id);
-      console.log("requestUser", requestId);
 
       if (!status || !requestId) {
         return res.status(400).json({ message: "Invalid parameters" });
@@ -96,23 +93,18 @@ routerRequest.post(
       const loggedInUser = await User.findById(id);
 
       if (!loggedInUser) {
-        res.status(401).json({ message: "user not logged In " });
+        return res.status(401).json({ message: "user not logged In " });
       }
+
       const allowedChange = ["accept", "reject"];
       if (!allowedChange.includes(status)) {
         return res.status(400).json({ message: "Invalid status" });
       }
+
       const connectionRequest = await ConnectionRequest.findOne({
-        $or: [
-          {
-            formUserID: new mongoose.Types.ObjectId(id),
-            toUserId: new mongoose.Types.ObjectId(requestId),
-          },
-          {
-            formUserID: new mongoose.Types.ObjectId(requestId),
-            toUserId: new mongoose.Types.ObjectId(id),
-          },
-        ],
+        _id: new mongoose.Types.ObjectId(requestId), // logged In user
+        toUserId: new mongoose.Types.ObjectId(id),
+        status: "interested",
       });
 
       console.log("Found Connection Request:", connectionRequest);

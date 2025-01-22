@@ -4,6 +4,7 @@ const { connectToDataBase } = require("./config/database");
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const routerRequest = require("./routes/request");
+const userRouter = require("./routes/user");
 const app = express();
 
 // app.use(bodyParser.json());
@@ -14,6 +15,7 @@ app.use(cookieParser());
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", routerRequest);
+app.use("/", userRouter);
 
 connectToDataBase()
   .then(() => {
