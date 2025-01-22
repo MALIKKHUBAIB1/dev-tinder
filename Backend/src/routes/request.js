@@ -71,5 +71,67 @@ routerRequest.post(
     }
   }
 );
+routerRequest.post(
+  "/request/review/:status/:requestId",
+  isUserAuthenticated,
+  async (req, res) => {
+    try {
+      //       Check if the user is logged in (already done with isUserAuthenticated).
+      // Find the logged-in user by their ID (already done).
+      // Destructure the status and requestId from the route parameters.
+      // Accept or reject the review request based on the status.
+      // Store the result in the database.
+      // Handle edge cases (such as invalid status, missing request ID, etc.).
+
+      const id = req._id;
+      const { status, requestId } = req.params;
+
+      console.log("loggedIn", id);
+      console.log("requestUser", requestId);
+
+      if (!status || !requestId) {
+        return res.status(400).json({ message: "Invalid parameters" });
+      }
+
+      const loggedInUser = await User.findById(id);
+
+      if (!loggedInUser) {
+        res.status(401).json({ message: "user not logged In " });
+      }
+      const allowedChange = ["accept", "reject"];
+      if (!allowedChange.includes(status)) {
+        return res.status(400).json({ message: "Invalid status" });
+      }
+      const connectionRequest = await ConnectionRequest.findOne({
+        $or: [
+          {
+            formUserID: new mongoose.Types.ObjectId(id),
+            toUserId: new mongoose.Types.ObjectId(requestId),
+          },
+          {
+            formUserID: new mongoose.Types.ObjectId(requestId),
+            toUserId: new mongoose.Types.ObjectId(id),
+          },
+        ],
+      });
+
+      console.log("Found Connection Request:", connectionRequest);
+
+      if (!connectionRequest) {
+        return res
+          .status(404)
+          .json({ message: "Connection request not found" });
+      }
+
+      connectionRequest.status = status;
+      connectionRequest.save();
+      res.status(200).json({
+        message: "succesfully made connection with the status of " + status,
+      });
+    } catch (error) {
+      res.status(500).json({ message: `${error.message}` });
+    }
+  }
+);
 
 module.exports = routerRequest;
