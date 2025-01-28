@@ -5,12 +5,15 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const routerRequest = require("./routes/request");
 const userRouter = require("./routes/user");
+const cors = require("cors");
+
 const app = express();
 
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 app.use("/", authRouter);
 app.use("/", profileRouter);

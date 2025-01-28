@@ -8,13 +8,15 @@ const { isUserAuthenticated } = require("../../utils/middleware/auth");
 authRouter.post("/login", async (req, res) => {
   try {
     const { password, email } = req.body;
+    console.log(req.body);
+
     if (!password || !email) {
       return res.status(400).send("Password or email cannot be empty.");
     }
 
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
-      return res.status(400).send("Invalid credentials ");
+      return res.status(400).send("Invalid credentials");
     }
 
     const isPasswordCorrect = await existingUser.comparePassword(password);
@@ -24,13 +26,16 @@ authRouter.post("/login", async (req, res) => {
 
     const token = existingUser.getJwt();
 
+    // Set the token in an httpOnly cookie for secure access
     res.cookie("token", token, {
       httpOnly: true,
-      expires: new Date(Date.now() + 1 * 3600000),
+      expires: new Date(Date.now() + 1 * 3600000), // 1 hour
     });
-    res.status(200).send(existingUser);
+
+    // Send success status without returning the token in response body
+    res.status(200).send({ token, message: "Login successful." });
   } catch (error) {
-    res.status(500).send("something went wrong" + error);
+    res.status(500).send("Something went wrong: " + error);
   }
 });
 
