@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 const Navbar = () => {
   const [showDashBoard, setShowDashBoard] = useState(false);
   const dropdownRef = useRef(null); // Ref for dropdown
   const userButtonRef = useRef(null); // Ref for the user button
-
+  const user = useSelector((state) => state.userReducer);
+  console.log(user);
   // Toggle dropdown visibility
   function handleShow() {
     setShowDashBoard(!showDashBoard);
@@ -126,66 +128,73 @@ const Navbar = () => {
         </div>
 
         {/* User menu and dropdown container */}
-        <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse relative">
-          {/* User menu button */}
-          <button
-            ref={userButtonRef} // Ref for the user button
-            type="button"
-            className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-            aria-expanded={showDashBoard ? "true" : "false"}
-            onClick={handleShow}
-          >
-            <span className="sr-only">Open user menu</span>
-            <img
-              className="w-8 h-8 rounded-full"
-              src="https://img.freepik.com/free-vector/young-prince-vector-illustration_1308-174367.jpg?t=st=1738070130~exp=1738073730~hmac=64f9c0f73e3f3b324e8b6dc2d5cd379e8f9f47965905f979821a054b16d199aa&w=740"
-              alt="user photo"
-            />
-          </button>
-
-          {/* Dropdown menu */}
-          {showDashBoard && (
-            <div
-              ref={dropdownRef} // Ref for the dropdown menu
-              className="z-50 absolute top-full right-0 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600"
+        {user && (
+          <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse relative">
+            {/* User menu button */}
+            <p className="mx-4 font-light">Welcome {user.firstName}</p>
+            <button
+              ref={userButtonRef} // Ref for the user button
+              type="button"
+              className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              aria-expanded={showDashBoard ? "true" : "false"}
+              onClick={handleShow}
             >
-              <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 dark:text-white">
-                  Bonnie Green
-                </span>
-                <span className="block text-sm text-gray-500 dark:text-gray-400">
-                  email@flowbite.com
-                </span>
+              <span className="sr-only">Open user menu</span>
+              <img
+                className="w-8 h-8 rounded-full"
+                src={
+                  user.photoUrl
+                    ? user.photoUrl
+                    : "https://img.freepik.com/free-vector/young-prince-vector-illustration_1308-174367.jpg?t=st=1738070130~exp=1738073730~hmac=64f9c0f73e3f3b324e8b6dc2d5cd379e8f9f47965905f979821a054b16d199aa&w=740"
+                }
+                alt="user photo"
+              />
+            </button>
+
+            {/* Dropdown menu */}
+            {showDashBoard && (
+              <div
+                ref={dropdownRef} // Ref for the dropdown menu
+                className="z-50 absolute top-full right-0 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600"
+              >
+                <div className="px-4 py-3">
+                  <span className="block text-sm text-gray-900 dark:text-white">
+                    Bonnie Green
+                  </span>
+                  <span className="block text-sm text-gray-500 dark:text-gray-400">
+                    email@flowbite.com
+                  </span>
+                </div>
+                <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
+                  <li>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      Dashboard
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      Settings
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      Sign out
+                    </a>
+                  </li>
+                </ul>
               </div>
-              <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Dashboard
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Settings
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Sign out
-                  </a>
-                </li>
-              </ul>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </nav>
   );

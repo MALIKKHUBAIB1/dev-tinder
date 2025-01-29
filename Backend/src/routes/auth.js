@@ -33,7 +33,7 @@ authRouter.post("/login", async (req, res) => {
     });
 
     // Send success status without returning the token in response body
-    res.status(200).send({ token, message: "Login successful." });
+    res.status(200).json({ data: existingUser, message: "Login successful." });
   } catch (error) {
     res.status(500).send("Something went wrong: " + error);
   }
