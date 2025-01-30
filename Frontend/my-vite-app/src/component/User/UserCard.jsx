@@ -1,4 +1,5 @@
 import React from "react";
+import Userskill from "./Userskill";
 
 function UserCard({ user }) {
   const { firstName, lastName, age, photoUrl, skills, about } = user;
@@ -32,34 +33,18 @@ function UserCard({ user }) {
         </p>
 
         {/* Skills */}
-        {skills && skills.length > 0 && (
-          <div className="mb-6">
-            <h6 className="text-gray-700 dark:text-gray-300 font-semibold text-lg mb-2">
-              Skills:
-            </h6>
-            <div className="flex flex-wrap justify-center gap-2">
-              {skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 text-sm md:text-base bg-blue-100 dark:bg-blue-700 text-blue-600 dark:text-white rounded-full"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
+        <Userskill skills={skills} />
 
         {/* Buttons Section */}
         <div className="flex justify-center gap-4 mt-4">
           {/* Accept Button */}
           <button className="px-6 py-3 text-base md:text-lg font-medium text-white bg-green-600 rounded-lg shadow-md hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-700 transition">
-            Accept
+            Interested
           </button>
 
           {/* Reject Button */}
           <button className="px-6 py-3 text-base md:text-lg font-medium text-white bg-red-600 rounded-lg shadow-md hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-700 transition">
-            Reject
+            Ignore
           </button>
         </div>
       </div>

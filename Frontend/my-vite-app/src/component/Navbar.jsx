@@ -207,12 +207,12 @@ const Navbar = () => {
                     </Link>
                   </li>
                   <li>
-                    <a
-                      href="#"
+                    <Link
+                      to="edit/profile"
                       className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     >
-                      Settings
-                    </a>
+                      Edit Profile
+                    </Link>
                   </li>
                   <li>
                     <a
