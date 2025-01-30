@@ -1,7 +1,6 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom"; // Fix import
 import "./App.css";
 import Body from "./component/Body";
-import { RouterProvider } from "react-router-dom";
 import About from "./component/About";
 import Feed from "./component/Feed";
 import Login from "./component/Login";
@@ -16,14 +15,14 @@ function App() {
       errorElement: <Error />,
       children: [
         { path: "/", element: <Feed /> },
-        { path: "/about", element: <About /> },
-        { path: "/login", element: <Login /> },
+        { path: "/about", element: <About /> }, // Keep this inside <Body />
         { path: "/signup", element: <Signup /> },
+        { path: "/login", element: <Login /> },
       ],
     },
-    { path: "/about", element: <About /> },
   ]);
-  return <RouterProvider router={router}></RouterProvider>;
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

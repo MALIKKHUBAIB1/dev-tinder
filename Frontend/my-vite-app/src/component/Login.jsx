@@ -8,16 +8,15 @@ import { useNavigate } from "react-router";
 const LoginForm = () => {
   const [email, setEmail] = useState("malik786@gmail.com");
   const [password, setPassword] = useState("Malik@1234");
-  const [error, setError] = useState("");
+  const [loginError, setLoginError] = useState("");
   const [token, setToken] = useState(null);
   const [status, setStatus] = useState(null);
   const navigate = useNavigate();
   const timer = useRef(null);
-
   const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!email || !password) {
       alert("Fields can't be empty.");
       return;
@@ -25,9 +24,8 @@ const LoginForm = () => {
 
     try {
       // Clear previous error and status
-      setError("");
+      setLoginError("");
       setStatus(null);
-
       const resp = await axios.post(
         "http://localhost:3000/login",
         {
@@ -37,29 +35,31 @@ const LoginForm = () => {
         { withCredentials: true }
       );
       if (!resp) {
-        setError("something went wrong ");
+        setLoginError("Something went wrong");
         return;
       }
       dispatch(addUser(resp?.data.data));
       setToken(resp.data.token); // Save the token on successful login
       navigate("/");
+      setEmail("");
+      setPassword("");
     } catch (err) {
       // Handle error with proper checks
-      setError(err.response?.data || "An error occurred.");
+      setLoginError(err.response?.data || "An error occurred.");
       setStatus(err.response?.status || 500);
     }
   };
 
   useEffect(() => {
-    if (error) {
+    if (loginError) {
       timer.current = setTimeout(() => {
-        setError("");
+        setLoginError("");
       }, 3000);
     }
     return () => {
       clearTimeout(timer.current);
     };
-  }, [error]);
+  }, [loginError]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200 dark:bg-gray-800">
@@ -107,8 +107,8 @@ const LoginForm = () => {
           />
         </div>
 
-        {error ? (
-          <Error message={error} status={status} />
+        {loginError ? (
+          <Error message={loginError} status={status} />
         ) : (
           <button
             type="submit"

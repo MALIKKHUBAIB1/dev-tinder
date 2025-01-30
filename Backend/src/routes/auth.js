@@ -8,7 +8,6 @@ const { isUserAuthenticated } = require("../../utils/middleware/auth");
 authRouter.post("/login", async (req, res) => {
   try {
     const { password, email } = req.body;
-    console.log(req.body);
 
     if (!password || !email) {
       return res.status(400).send("Password or email cannot be empty.");
