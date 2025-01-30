@@ -14,7 +14,6 @@ function Body() {
   async function getUserProfile() {
     if (user) return;
     try {
-      
       const res = await axios.get("http://localhost:3000/profile", {
         withCredentials: true,
       });
@@ -29,12 +28,12 @@ function Body() {
 
   useEffect(() => {
     getUserProfile();
-  }, []);
+  }, [user]);
   return (
     <div className="min-h-screen flex flex-col dark:bg-gray-800">
       <Navbar />
       <div className="flex-grow">
-        {error ? <Error message={error} /> : <Outlet />}
+        <Outlet />
       </div>
       <Footer />
     </div>

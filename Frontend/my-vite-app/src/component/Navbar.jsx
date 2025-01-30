@@ -1,19 +1,34 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import axios from "axios";
+import { removeUser } from "../utils/userSlice";
 
 const Navbar = () => {
   const [showDashBoard, setShowDashBoard] = useState(false);
   const dropdownRef = useRef(null); // Ref for dropdown
   const userButtonRef = useRef(null); // Ref for the user button
   const user = useSelector((state) => state.userReducer);
-  const path = useLocation();
-  console.log(path);
-  console.log(user);
+  const location = useLocation();
+  const dispatch = useDispatch();
   // Toggle dropdown visibility
   function handleShow() {
     setShowDashBoard(!showDashBoard);
+  }
+  async function handleSignOut() {
+    try {
+      const resp = await axios.post(
+        "http://localhost:3000/logout",
+        {},
+        { withCredentials: true }
+      );
+      console.log(resp);
+      dispatch(removeUser());
+      // navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // Close the dropdown when clicking outside
@@ -118,12 +133,19 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                <Link
+                  to="/price"
+                  className={`block py-2 px-3 rounded-sm md:p-0 
+              ${
+                location.pathname === "/price"
+                  ? "text-blue-700 dark:text-blue-500"
+                  : "text-gray-900 dark:text-white"
+              } 
+              hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 
+              dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
                 >
-                  Pricing
-                </a>
+                  price
+                </Link>
               </li>
               <li>
                 <a
@@ -169,10 +191,10 @@ const Navbar = () => {
               >
                 <div className="px-4 py-3">
                   <span className="block text-sm text-gray-900 dark:text-white">
-                    Bonnie Green
+                    {user.firstName}- {user.lastName}
                   </span>
                   <span className="block text-sm text-gray-500 dark:text-gray-400">
-                    email@flowbite.com
+                    {user.email}
                   </span>
                 </div>
                 <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
@@ -193,12 +215,13 @@ const Navbar = () => {
                     </a>
                   </li>
                   <li>
-                    <a
+                    <button
+                      onClick={handleSignOut}
                       href="#"
                       className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     >
                       Sign out
-                    </a>
+                    </button>
                   </li>
                 </ul>
               </div>
