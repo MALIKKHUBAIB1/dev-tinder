@@ -4,7 +4,7 @@ import Footer from "../component/Footer";
 import Navbar from "../component/Navbar";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../utils/userSlice";
+import { addUser } from "../utils/store/userSlice";
 import Error from "../utils/Error";
 function Body() {
   const dispatch = useDispatch();

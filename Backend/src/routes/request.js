@@ -107,8 +107,6 @@ routerRequest.post(
         status: "interested",
       });
 
-      console.log("Found Connection Request:", connectionRequest);
-
       if (!connectionRequest) {
         return res
           .status(404)

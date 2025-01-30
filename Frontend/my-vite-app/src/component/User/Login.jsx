@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import Error from "../utils/Error";
+import Error from "../../utils/Error";
 import { useDispatch } from "react-redux";
-import { addUser } from "../utils/userSlice";
+import { addUser } from "../../utils/store/userSlice";
 import { useNavigate } from "react-router";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("malik786@gmail.com");
   const [password, setPassword] = useState("Malik@1234");
   const [loginError, setLoginError] = useState("");
-  const [token, setToken] = useState(null);
   const [status, setStatus] = useState(null);
   const navigate = useNavigate();
   const timer = useRef(null);
@@ -39,7 +38,6 @@ const LoginForm = () => {
         return;
       }
       dispatch(addUser(resp?.data.data));
-      setToken(resp.data.token); // Save the token on successful login
       navigate("/");
       setEmail("");
       setPassword("");
@@ -118,13 +116,6 @@ const LoginForm = () => {
           </button>
         )}
       </form>
-
-      {/* Show token if login is successful */}
-      {token && (
-        <div className="mt-4 p-4 bg-green-100 text-green-800 rounded-lg">
-          <p>Login successful! Your token: {token}</p>
-        </div>
-      )}
     </div>
   );
 };

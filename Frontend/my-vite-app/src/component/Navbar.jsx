@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router";
 import axios from "axios";
-import { removeUser } from "../utils/userSlice";
+import { removeUser } from "../utils/store/userSlice";
 
 const Navbar = () => {
   const [showDashBoard, setShowDashBoard] = useState(false);
@@ -199,12 +199,12 @@ const Navbar = () => {
                 </div>
                 <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
                   <li>
-                    <a
-                      href="#"
+                    <Link
+                      to="/profile"
                       className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     >
-                      Dashboard
-                    </a>
+                      Profile
+                    </Link>
                   </li>
                   <li>
                     <a
@@ -215,13 +215,12 @@ const Navbar = () => {
                     </a>
                   </li>
                   <li>
-                    <button
+                    <a
                       onClick={handleSignOut}
-                      href="#"
                       className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     >
                       Sign out
-                    </button>
+                    </a>
                   </li>
                 </ul>
               </div>
