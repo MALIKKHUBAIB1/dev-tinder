@@ -36,12 +36,10 @@ function Feed() {
         setShow(false);
       }, 3000);
     }
-
     return () => {
-      clearTimeout(timer.current);
+      if (timer.current) clearTimeout(timer.current);
     };
-  }, [error]); // Only re-run when `error` changes
-
+  }, [error]);
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       {show && <Toast message={error} type="error" />}

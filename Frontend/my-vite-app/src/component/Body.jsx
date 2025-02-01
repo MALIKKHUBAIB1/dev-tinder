@@ -5,20 +5,20 @@ import Navbar from "../component/Navbar";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/store/userSlice";
-import Error from "../utils/Error";
 function Body() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const user = useSelector((state) => state.userReducer);
   async function getUserProfile() {
-    if (user) return;
+    if (user) return; // if user is alredy present the return
     try {
       const res = await axios.get("http://localhost:3000/profile", {
         withCredentials: true,
       });
       dispatch(addUser(res.data));
     } catch (error) {
+      console.log(error);
       if (error.status === 401) {
         navigate("/login");
       }
@@ -29,6 +29,8 @@ function Body() {
   useEffect(() => {
     getUserProfile();
   }, [user]);
+
+
   return (
     <div className="min-h-screen flex flex-col dark:bg-gray-800">
       <Navbar />

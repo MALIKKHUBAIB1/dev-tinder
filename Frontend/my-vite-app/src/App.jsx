@@ -8,7 +8,7 @@ import Signup from "./component/User/Signup";
 import Error from "./utils/Error";
 import Profile from "./component/User/Profile";
 import UserEditPrifile from "./component/User/UsereditProfile";
-import Connection from "./component/User/Connection";
+import Connection from "./component/User/connection/Connection";
 
 function App() {
   const router = createBrowserRouter([
