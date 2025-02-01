@@ -9,6 +9,7 @@ import Error from "./utils/Error";
 import Profile from "./component/User/Profile";
 import UserEditPrifile from "./component/User/UsereditProfile";
 import Connection from "./component/User/connection/Connection";
+import Request from "./component/Request";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,6 +25,7 @@ function App() {
         { path: "/profile", element: <Profile /> },
         { path: "/edit/profile", element: <UserEditPrifile /> },
         { path: "/user/connection", element: <Connection /> },
+        { path: "/user/requests/recived", element: <Request /> },
       ],
     },
   ]);

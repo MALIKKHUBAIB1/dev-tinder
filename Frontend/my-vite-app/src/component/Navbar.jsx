@@ -134,7 +134,7 @@ const Navbar = () => {
               </li>
               <li>
                 <Link
-                  to="/price"
+                  to="/user/requests/recived"
                   className={`block py-2 px-3 rounded-sm md:p-0 
               ${
                 location.pathname === "/price"
@@ -144,7 +144,7 @@ const Navbar = () => {
               hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 
               dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
                 >
-                  price
+                  Connection Request
                 </Link>
               </li>
               <li>

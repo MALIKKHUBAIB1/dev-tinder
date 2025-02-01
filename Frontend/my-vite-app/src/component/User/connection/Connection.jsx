@@ -39,7 +39,7 @@ function Connection() {
   }, [error]);
 
   return (
-    <div className="flex items-center flex-col min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+    <div className="flex items-center flex-col min-h-screen bg-gray-100 dark:bg-gray-800 p-6">
       {error && <Toast message={error} type={"error"} />}
 
       <h1 className="font-extrabold text-4xl text-gray-800 dark:text-white mb-6">
