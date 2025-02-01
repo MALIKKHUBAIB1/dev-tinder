@@ -50,13 +50,15 @@ function validDateProfileData(userData) {
     "photoUrl",
     "firstName",
     "lastName",
-  ];
+    "gender",
+  ];  
   const isUpdateAllowed = Object.keys(userData).every((userInputKey) => {
     return allowedUpdate.includes(userInputKey); // Explicitly return the result
   });
 
   return isUpdateAllowed;
 }
+
 function validatePasswords(userInputPassword) {
   const { oldPassword, newPassword, confirmPassword } = userInputPassword;
 

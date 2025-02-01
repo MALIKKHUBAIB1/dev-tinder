@@ -7,7 +7,8 @@ import Login from "./component/User/Login";
 import Signup from "./component/User/Signup";
 import Error from "./utils/Error";
 import Profile from "./component/User/Profile";
-import UserEditPrifile from "./component/User/UsereditPrifile";
+import UserEditPrifile from "./component/User/UsereditProfile";
+import Connection from "./component/User/Connection";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,6 +23,7 @@ function App() {
         { path: "/login", element: <Login /> },
         { path: "/profile", element: <Profile /> },
         { path: "/edit/profile", element: <UserEditPrifile /> },
+        { path: "/user/connection", element: <Connection /> },
       ],
     },
   ]);

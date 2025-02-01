@@ -19,10 +19,8 @@ function Feed() {
       const resp = await axios.get(BASE_URL + "user/feed", {
         withCredentials: true,
       });
-      console.log(feed);
       dispatch(addFeed(resp.data));
     } catch (error) {
-      console.log(error);
       setError(error?.response?.statusText || "Something went wrong");
       setShow(true); // Show toast when an error occurs
     }

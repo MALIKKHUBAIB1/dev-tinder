@@ -54,6 +54,7 @@ profileRouter.patch("/profile/edit", isUserAuthenticated, async (req, res) => {
   try {
     const updateData = req.body;
     const isValidProfile = validDateProfileData(updateData);
+
     if (!isValidProfile) {
       return res.status(400).json({ message: "update not allowed" });
     }
@@ -77,11 +78,12 @@ profileRouter.patch("/profile/edit", isUserAuthenticated, async (req, res) => {
     await user.save();
     res
       .status(200)
-      .send(
-        `${user.firstName} ${user.lastName} your profile is updated successfuly`
-      );
+      .json({
+        data: user,
+        message: `${user.firstName} ${user.lastName} your profile is updated successfuly`,
+      });
   } catch (error) {
-    res.status(500).send(err.message);
+    res.status(500).send(error.message);
   }
 });
 module.exports = profileRouter;
