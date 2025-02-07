@@ -11,7 +11,6 @@ function Connection() {
   const dispatch = useDispatch();
   const timer = useRef(null);
   const connection = useSelector((state) => state.connection);
-
   async function fetchConnection() {
     try {
       setError(""); // Clear error before fetching
@@ -40,20 +39,24 @@ function Connection() {
 
   return (
     <div className="flex items-center flex-col min-h-screen bg-gray-100 dark:bg-gray-800 p-6">
-      {error && <Toast message={error} type={"error"} />}
-
-      <h1 className="font-extrabold text-4xl text-gray-800 dark:text-white mb-6">
-        Connections
-      </h1>
-
-      {connection?.length === 0 ? (
-        <p className="text-gray-500 text-lg">No connections found.</p>
+      {!connection ? (
+        <h1 className="font-extrabold text-4xl text-gray-800 dark:text-white mb-6">
+          No Connections found
+        </h1>
       ) : (
-        connection &&
+        error && <Toast message={error} type={"error"} />
+      )}
+
+      {connection && (
+        <h1 className="font-extrabold text-4xl text-gray-800 dark:text-white mb-6">
+          Connections
+        </h1>
+      )}
+
+      {connection &&
         connection.map((connection) => (
           <ConnectionList connection={connection} key={connection._id} />
-        ))
-      )}
+        ))}
     </div>
   );
 }

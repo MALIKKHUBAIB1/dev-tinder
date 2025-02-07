@@ -20,7 +20,6 @@ const LoginForm = () => {
       alert("Fields can't be empty.");
       return;
     }
-
     try {
       // Clear previous error and status
       setLoginError("");
@@ -115,6 +114,12 @@ const LoginForm = () => {
             Submit
           </button>
         )}
+        <p
+          className="cursor-pointer text-center my-4 text-xl"
+          onClick={() => navigate("/signup")}
+        >
+          sing Up
+        </p>
       </form>
     </div>
   );

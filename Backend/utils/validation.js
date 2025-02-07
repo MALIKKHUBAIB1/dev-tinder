@@ -2,7 +2,7 @@ const validator = require("validator");
 
 const signupValidation = (userData) => {
   const { firstName, lastName, age, gender, password, email } = userData;
-
+  console.log(userData);
   function validationError(err) {
     throw new Error(err);
   }
@@ -27,7 +27,7 @@ const signupValidation = (userData) => {
   }
 
   // Validate age
-  if (!Number.isInteger(age) || age < 0 || age > 120) {
+  if (age < 0 || age > 120) {
     validationError("Age must be a valid number between 0 and 120.");
   }
 
@@ -51,7 +51,7 @@ function validDateProfileData(userData) {
     "firstName",
     "lastName",
     "gender",
-  ];  
+  ];
   const isUpdateAllowed = Object.keys(userData).every((userInputKey) => {
     return allowedUpdate.includes(userInputKey); // Explicitly return the result
   });

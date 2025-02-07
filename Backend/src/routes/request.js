@@ -15,7 +15,6 @@ routerRequest.post(
       const status = req.params.status;
       const allowedStatus = ["interested", "ignore"];
       const isStatusValid = allowedStatus.includes(status);
-
       if (!isStatusValid) {
         return res
           .status(401)
@@ -102,11 +101,10 @@ routerRequest.post(
       }
 
       const connectionRequest = await ConnectionRequest.findOne({
-        _id: new mongoose.Types.ObjectId(requestId), // logged In user
+        formUserID: new mongoose.Types.ObjectId(requestId), // logged In user
         toUserId: new mongoose.Types.ObjectId(id),
         status: "interested",
       });
-
       if (!connectionRequest) {
         return res
           .status(404)
@@ -114,6 +112,7 @@ routerRequest.post(
       }
 
       connectionRequest.status = status;
+
       connectionRequest.save();
       res.status(200).json({
         message: "succesfully made connection with the status of " + status,

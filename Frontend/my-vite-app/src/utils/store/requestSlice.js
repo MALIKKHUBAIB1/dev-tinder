@@ -7,8 +7,11 @@ const requestSlice = createSlice({
     addRequest: (state, action) => {
       return action.payload;
     },
+    removePendingRequest: (state, action) => {
+      return state.filter((item) => item.formUserID._id !== action.payload);
+    },
   },
 });
 
-export const { addRequest } = requestSlice.actions;
+export const { addRequest, removePendingRequest } = requestSlice.actions;
 export default requestSlice.reducer;

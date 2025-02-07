@@ -63,8 +63,8 @@ authRouter.post("/signup", async (req, res) => {
 
   try {
     const { firstName, lastName, age, gender, password, email, skills } =
-      req.body;
-    signupValidation(req.body);
+      req.body.formData;
+    signupValidation(req.body.formData);
 
     const existUser = await User.findOne({ email });
     if (existUser) {
@@ -82,10 +82,19 @@ authRouter.post("/signup", async (req, res) => {
       skills,
     };
     const user = new User(userData);
-    await user.save();
-    res.status(200).send("user created successfully");
+    const saveUser = await user.save();
+    const token = saveUser.getJwt();
+
+    // Set the token in an httpOnly cookie for secure access
+    res.cookie("token", token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 1 * 3600000), // 1 hour
+    });
+    res
+      .status(200)
+      .json({ message: "user created successfully", data: saveUser });
   } catch (error) {
-    res.status(400).send("error " + error.message);
+    res.status(500).send("error " + error.message);
   }
 });
 
