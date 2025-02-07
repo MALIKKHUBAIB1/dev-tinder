@@ -48,7 +48,6 @@ const UserEditProfile = () => {
       setSucess(resp?.data?.message);
       dispatch(addUser(resp?.data?.data));
     } catch (error) {
-      console.log(error);
       setError(error?.response?.statusText || "Something went wrong");
     }
   };

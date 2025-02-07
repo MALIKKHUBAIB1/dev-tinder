@@ -16,7 +16,6 @@ function Request() {
       const resp = await axios.get(BASE_URL + "user/requests/recived", {
         withCredentials: true,
       });
-      console.log(resp?.data?.data);
       dispatch(addRequest(resp?.data?.data));
     } catch (error) {
       if (error?.response?.data?.message === "there is no connection found ") {

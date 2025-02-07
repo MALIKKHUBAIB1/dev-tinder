@@ -34,6 +34,10 @@ function Body() {
   }
 
   useEffect(() => {
+    if (location.pathname === "/signup" && user) {
+      navigate("/");
+    }
+
     if (!user) {
       getUserProfile(); // Only fetch user profile if user is not already set
     }

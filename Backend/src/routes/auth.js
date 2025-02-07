@@ -44,7 +44,6 @@ authRouter.post("/logout", async (req, res) => {
   // then remove the token and session and redirect to the "/login page "
   try {
     const { token } = req.cookies;
-    console.log(token);
     if (!token) {
       return res.status(401).json({ message: "User not logged in" });
     }

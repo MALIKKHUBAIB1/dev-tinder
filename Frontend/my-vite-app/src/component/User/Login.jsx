@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Error from "../../utils/Error";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../../utils/store/userSlice";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("malik786@gmail.com");
   const [password, setPassword] = useState("Malik@1234");
   const [loginError, setLoginError] = useState("");
+  const user = useSelector((state) => state.userReducer);
   const [status, setStatus] = useState(null);
+  const location = useLocation();
   const navigate = useNavigate();
   const timer = useRef(null);
   const dispatch = useDispatch();
@@ -57,6 +59,12 @@ const LoginForm = () => {
       clearTimeout(timer.current);
     };
   }, [loginError]);
+
+  useEffect(() => {
+    if (location.pathname === "/login" && user) {
+      navigate("/");
+    }
+  }, [user, location]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200 dark:bg-gray-800">
