@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addConnection } from "../../../utils/store/connectionSlice";
 import Toast from "../../../utils/Toast";
 import ConnectionList from "./ConnectionList";
-
 function Connection() {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
@@ -22,7 +21,6 @@ function Connection() {
       setError(error?.response?.statusText || "Something went wrong");
     }
   }
-
   // Fetch data on mount
   useEffect(() => {
     fetchConnection();

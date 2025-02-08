@@ -7,11 +7,8 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const routerRequest = require("./routes/request");
 const userRouter = require("./routes/user");
-
-
 const app = express();
 const PORT = 3000;
-
 
 // ✅ Correct CORS Middleware Setup
 app.use(
@@ -22,7 +19,6 @@ app.use(
     credentials: true,
   })
 );
-
 
 // ✅ Handle Preflight Requests Properly
 app.options("*", (req, res) => {

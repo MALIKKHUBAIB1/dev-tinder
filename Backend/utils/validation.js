@@ -2,7 +2,6 @@ const validator = require("validator");
 
 const signupValidation = (userData) => {
   const { firstName, lastName, age, gender, password, email } = userData;
-  console.log(userData);
   function validationError(err) {
     throw new Error(err);
   }
