@@ -4,6 +4,7 @@ import Error from "../../utils/Error";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../../utils/store/userSlice";
 import { useLocation, useNavigate } from "react-router";
+import { BASE_URL } from "../../utils/const";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("malik786@gmail.com");
@@ -27,7 +28,7 @@ const LoginForm = () => {
       setLoginError("");
       setStatus(null);
       const resp = await axios.post(
-        "http://localhost:3000/login",
+        BASE_URL + "login",
         {
           email,
           password,
@@ -44,7 +45,7 @@ const LoginForm = () => {
       setPassword("");
     } catch (err) {
       // Handle error with proper checks
-      setLoginError(err.response?.data || "An error occurred.");
+      setLoginError(err.response?.message || "An error occurred.");
       setStatus(err.response?.status || 500);
     }
   };

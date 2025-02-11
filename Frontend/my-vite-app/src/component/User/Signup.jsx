@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { addUser } from "../../utils/store/userSlice";
 import Toast from "../../utils/Toast";
+import { BASE_URL } from "../../utils/const";
 
 function Signup() {
   const [success, setSucess] = useState("");
@@ -55,7 +56,7 @@ function Signup() {
     }
     try {
       setError("");
-      const resp = await axios.post("http://localhost:3000/signup", {
+      const resp = await axios.post(BASE_URL + "signup", {
         formData,
       });
       if (!resp.data) {

@@ -5,6 +5,7 @@ import Navbar from "../component/Navbar";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/store/userSlice";
+import { BASE_URL } from "../utils/const";
 
 function Body() {
   const dispatch = useDispatch();
@@ -16,9 +17,10 @@ function Body() {
   async function getUserProfile() {
     if (user) return; // If user exists, don't fetch profile again.
     try {
-      const res = await axios.get("http://localhost:3000/profile", {
+      const res = await axios.get(BASE_URL + "profile", {
         withCredentials: true,
       });
+      console.log(res.data);
 
       dispatch(addUser(res.data)); // Dispatch user data to Redux store
     } catch (error) {

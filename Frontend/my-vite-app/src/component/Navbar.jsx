@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router";
 import axios from "axios";
 import { removeUser } from "../utils/store/userSlice";
+import { BASE_URL } from "../utils/const";
 
 const Navbar = () => {
   const [showDashBoard, setShowDashBoard] = useState(false);
@@ -19,7 +20,7 @@ const Navbar = () => {
   async function handleSignOut() {
     try {
       const resp = await axios.post(
-        "http://localhost:3000/logout",
+        BASE_URL+"logout",
         {},
         { withCredentials: true }
       );
